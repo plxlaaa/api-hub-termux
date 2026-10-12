@@ -30,7 +30,15 @@ bash <(curl -fsSL https://raw.githubusercontent.com/plxlaaa/api-hub-termux/main/
 
 Prisma 的 query engine 是 glibc 原生二进制，Android 跑不了；主仓库内置了
 `node:sqlite` 纯绑定驱动适配器（零原生编译依赖），Android 上自动切换，
-数据访问行为与 Prisma 完全一致（123 项单测双驱动各跑一遍保证）。
+数据访问行为与 Prisma 完全一致（135 项单测双驱动各跑一遍保证）。
+
+## 已在 node-sqlite 驱动下验证的功能（v1.1.0）
+
+主仓库 v1.0.1 之后的全部新功能均已在 Termux 同款驱动（`DB_DRIVER=node-sqlite`）下跑通真实链路：
+
+- **聚合批量导入**：速记 `url,key` 一行一站 → 自动探测拉模型 → 一键自动建路由（多站同模型合并，负载均衡+故障转移）
+- **模型白名单**：密钥级 `metadata.allowedModels`，白名单外模型 403 拦截，`/v1/models` 同步过滤
+- **单 Key 限速 / 路由级 metadata / 日志游标分页** 等 UI 化功能
 
 详见 [TERMUX.md](./TERMUX.md)（部署 / 后台保活 / 开机自启 / 排障）。
 
