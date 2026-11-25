@@ -28,6 +28,27 @@ pkg update && pkg upgrade
 bash <(curl -fsSL https://raw.githubusercontent.com/plxlaaa/api-hub/main/install-termux.sh)
 ```
 
+脚本会：装 Node.js → 克隆主仓 → 构建 → 自检 → 拉起服务 → 配开机自启（若已装 Termux:Boot）。
+内置 `api-hub.sh` 服务管理：`status / start / stop / restart`，看门狗自动拉起崩溃进程。
+
+### 开机自启（7×24 关键）
+
+1. F-Droid 安装 **Termux:Boot** 插件，**打开一次**（否则系统不授予自启权限）
+2. Termux 内执行 `bash install-termux.sh --boot`（或重跑安装脚本）
+3. 重启手机验证：`bash ~/api-hub/api-hub.sh status` 应显示运行中
+
+### 看门狗
+
+自启配置内置看门狗（学习 NapCat Watchdog 实战）：30s 轮询 `/api/health`，
+3 连败自动杀进程重启。进程被系统杀后台也能自愈，无需人工干预。
+手动启动看门狗：`bash ~/api-hub/api-hub.sh watchdog`（前台运行，Ctrl+C 退出）。
+
+### 升级版本
+
+```bash
+bash install-termux.sh --update   # 拉代码→重建→重启，一条龙
+```
+
 或手动：
 
 ```bash
